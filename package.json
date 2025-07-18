@@ -2,7 +2,7 @@
   "name": "vs-code-pomodoro-flip-clock",
   "displayName": "Pomodoro Flip Clock",
   "description": "A fun Pomodoro timer with a flip clock animation for VS Code.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "your-publisher-id",
   "engines": {
     "vscode": ">=1.70.0"
@@ -10,6 +10,10 @@
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GHOST117s/VS_code_Pomodoro"
+  },
   "activationEvents": [
     "onCommand:pomodoro.showFlipClock"
   ],
@@ -19,6 +23,29 @@
       {
         "command": "pomodoro.showFlipClock",
         "title": "Show Pomodoro Flip Clock"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pomodoroContainer",
+          "title": "Pomodoro",
+          "icon": "src/webview/flipClock.svg"
+        }
+      ]
+    },
+    "views": {
+      "pomodoroContainer": [
+        {
+          "id": "pomodoroView",
+          "name": "Pomodoro Timer"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "pomodoroView",
+        "contents": "Start your Pomodoro session!"
       }
     ]
   },
@@ -35,5 +62,11 @@
     "typescript": "^5.0.0",
     "eslint": "^8.0.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "files": [
+    {
+      "path": ".",
+      "collapsed": true
+    }
+  ]
 }
