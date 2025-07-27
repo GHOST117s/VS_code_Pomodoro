@@ -44,7 +44,6 @@ You can customize the settings via the following methods or through [settings.js
 
 *Note: After changing settings, you need to reload VSCode to apply the changes.*
 
-<img src="https://github.com/user-attachments/assets/8853cb89-7aad-4873-ac41-b9a8da4bd33f" style="filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.5));"/>
 
 ## Settings ⚙️
 
