@@ -31,7 +31,7 @@ A beautiful, feature-rich Pomodoro timer extension that helps you stay focused a
 4. Use the controls to pause, reset, or skip sessions as needed
 
 <p align="center">
-  <img src="images/Title.png" alt="Pomodoro Timer Interface" width="300px" style="border-radius: 6px; margin-top: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);">
+  <img src="images/Screenshot 2025-07-27 at 10.55.18 PM.png" alt="Pomodoro Timer Interface" width="300px" style="border-radius: 6px; margin-top: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);">
 </p>
 
 ## The Pomodoro Technique 🍅
