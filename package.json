@@ -2,17 +2,17 @@
   "name": "pomodoro-timer-vscode",
   "displayName": "Pomodoro Timer",
   "description": "A beautiful Pomodoro timer for productivity in the VS Code explorer sidebar.",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "icon": "images/AnalogClock.gif",
   "publisher": "sidharthkumar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sidharthkumar/pomodoro-timer-vscode-extension.git"
+    "url": "https://github.com/GHOST117s/VS_code_Pomodoro"
   },
   "bugs": {
-    "url": "https://github.com/sidharthkumar/pomodoro-timer-vscode-extension/issues"
+    "url": "https://github.com/GHOST117s/VS_code_Pomodoro/issues"
   },
-  "homepage": "https://github.com/sidharthkumar/pomodoro-timer-vscode-extension#readme",
+  "homepage": "https://github.com/GHOST117s",
   "license": "MIT",
   "engines": {
     "vscode": "^1.97.0"

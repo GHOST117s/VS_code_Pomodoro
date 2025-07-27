@@ -200,7 +200,6 @@ export function getPomodoroTimerHtml(): string {
             <span class="status-indicator status-work"></span>
             <span id="sessionType">Work Session</span>
         </div>
-        
         <div class="progress-ring">
             <svg class="progress-ring-circle">
                 <circle cx="100" cy="100" r="90" class="progress-ring-circle" />
@@ -210,16 +209,13 @@ export function getPomodoroTimerHtml(): string {
                 <div class="timer-display" id="timerDisplay">25:00</div>
             </div>
         </div>
-
         <div class="session-counter" id="sessionCounter">Session 1 of 4</div>
-
         <div class="controls">
             <button class="btn btn-primary" id="startBtn">Start</button>
             <button class="btn btn-secondary" id="pauseBtn" disabled>Pause</button>
             <button class="btn btn-secondary" id="resetBtn">Reset</button>
             <button class="btn btn-secondary" id="skipBtn">Skip</button>
         </div>
-
         <div class="stats">
             <div class="stats-item">
                 <span>Work Duration:</span>
@@ -239,31 +235,20 @@ export function getPomodoroTimerHtml(): string {
             </div>
         </div>
     </div>
-
     <script>
         const vscode = acquireVsCodeApi();
-        
         class PomodoroTimer {
             constructor() {
                 this.workDuration = ${workDuration} * 60;
                 this.breakDuration = ${breakDuration} * 60;
                 this.longBreakDuration = ${longBreakDuration} * 60;
                 this.longBreakInterval = ${longBreakInterval};
-                
                 this.currentTime = this.workDuration;
                 this.isRunning = false;
                 this.currentSession = 1;
                 this.completedSessions = 0;
                 this.isWorkSession = true;
                 this.interval = null;
-                
-                this.initializeElements();
-                this.setupEventListeners();
-                this.updateDisplay();
-                this.loadState();
-            }
-
-            initializeElements() {
                 this.timerDisplay = document.getElementById('timerDisplay');
                 this.sessionType = document.getElementById('sessionType');
                 this.sessionCounter = document.getElementById('sessionCounter');
@@ -274,90 +259,80 @@ export function getPomodoroTimerHtml(): string {
                 this.progressCircle = document.getElementById('progressCircle');
                 this.completedSessionsEl = document.getElementById('completedSessions');
                 this.statusIndicator = document.querySelector('.status-indicator');
+                this.setupEventListeners();
+                this.updateDisplay();
+                this.loadState();
             }
-
             setupEventListeners() {
                 this.startBtn.addEventListener('click', () => this.start());
                 this.pauseBtn.addEventListener('click', () => this.pause());
                 this.resetBtn.addEventListener('click', () => this.reset());
                 this.skipBtn.addEventListener('click', () => this.skip());
             }
-
             start() {
+                if (this.isRunning) return;
                 this.isRunning = true;
                 this.startBtn.disabled = true;
                 this.pauseBtn.disabled = false;
-                
                 this.interval = setInterval(() => {
                     this.currentTime--;
                     this.updateDisplay();
                     this.saveState();
-                    
                     if (this.currentTime <= 0) {
                         this.complete();
                     }
                 }, 1000);
             }
-
             pause() {
+                if (!this.isRunning) return;
                 this.isRunning = false;
                 this.startBtn.disabled = false;
                 this.pauseBtn.disabled = true;
                 clearInterval(this.interval);
                 this.saveState();
             }
-
             reset() {
                 this.pause();
-                this.currentTime = this.isWorkSession ? this.workDuration : 
+                this.currentTime = this.isWorkSession ? this.workDuration :
                     (this.currentSession % this.longBreakInterval === 0 ? this.longBreakDuration : this.breakDuration);
                 this.updateDisplay();
                 this.saveState();
             }
-
             skip() {
                 this.pause();
                 this.complete();
             }
-
             complete() {
                 this.pause();
-                
                 if (this.isWorkSession) {
                     this.completedSessions++;
                     vscode.postMessage({
                         command: 'showNotification',
                         text: \`Work session completed! Time for a \${this.currentSession % this.longBreakInterval === 0 ? 'long' : 'short'} break.\`
                     });
-                    
                     this.isWorkSession = false;
-                    this.currentTime = this.currentSession % this.longBreakInterval === 0 ? 
+                    this.currentTime = this.currentSession % this.longBreakInterval === 0 ?
                         this.longBreakDuration : this.breakDuration;
                 } else {
                     vscode.postMessage({
                         command: 'showNotification',
                         text: 'Break time finished! Ready for the next work session?'
                     });
-                    
                     this.isWorkSession = true;
                     this.currentSession++;
                     this.currentTime = this.workDuration;
                 }
-                
                 this.updateDisplay();
                 this.saveState();
             }
-
             updateDisplay() {
                 const minutes = Math.floor(this.currentTime / 60);
                 const seconds = this.currentTime % 60;
                 this.timerDisplay.textContent = \`\${minutes.toString().padStart(2, '0')}:\${seconds.toString().padStart(2, '0')}\`;
-                
-                const totalTime = this.isWorkSession ? this.workDuration : 
+                const totalTime = this.isWorkSession ? this.workDuration :
                     (this.currentSession % this.longBreakInterval === 0 ? this.longBreakDuration : this.breakDuration);
                 const progress = ((totalTime - this.currentTime) / totalTime) * 565.48;
                 this.progressCircle.style.strokeDashoffset = 565.48 - progress;
-                
                 if (this.isWorkSession) {
                     this.sessionType.textContent = 'Work Session';
                     this.statusIndicator.className = 'status-indicator status-work';
@@ -368,11 +343,9 @@ export function getPomodoroTimerHtml(): string {
                     this.sessionType.textContent = 'Short Break';
                     this.statusIndicator.className = 'status-indicator status-break';
                 }
-                
                 this.sessionCounter.textContent = \`Session \${this.currentSession} of \${this.longBreakInterval}\`;
                 this.completedSessionsEl.textContent = this.completedSessions.toString();
             }
-
             saveState() {
                 const state = {
                     currentTime: this.currentTime,
@@ -384,28 +357,23 @@ export function getPomodoroTimerHtml(): string {
                 };
                 vscode.setState(state);
             }
-
             loadState() {
                 const state = vscode.getState();
                 if (state) {
                     const timeDiff = Math.floor((Date.now() - state.timestamp) / 1000);
-                    
                     this.currentSession = state.currentSession;
                     this.completedSessions = state.completedSessions;
                     this.isWorkSession = state.isWorkSession;
-                    
                     if (state.isRunning && timeDiff < state.currentTime) {
                         this.currentTime = state.currentTime - timeDiff;
                         this.start();
                     } else {
                         this.currentTime = state.currentTime;
                     }
-                    
                     this.updateDisplay();
                 }
             }
         }
-
         new PomodoroTimer();
     </script>
 </body>
