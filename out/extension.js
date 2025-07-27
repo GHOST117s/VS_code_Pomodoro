@@ -36,38 +36,49 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
-const path = __importStar(require("path"));
-const fs = __importStar(require("fs"));
-class PomodoroViewProvider {
-    constructor(context) {
-        this.context = context;
-        this._extensionPath = context.extensionPath;
+const l10n = __importStar(require("@vscode/l10n"));
+const pomodoro_timer_html_1 = require("./pomodoro-timer-html");
+function activate(context) {
+    const provider = new PomodoroTimerViewProvider(context.extensionUri);
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider(PomodoroTimerViewProvider.viewType, provider));
+    // Listen for configuration changes
+    vscode.workspace.onDidChangeConfiguration(event => {
+        if (event.affectsConfiguration('pomodoroTimer')) {
+            vscode.window.showInformationMessage(l10n.t('Configuration changed. Please reload the window to apply changes.'), l10n.t('Reload')).then(selection => {
+                if (selection === l10n.t('Reload')) {
+                    vscode.commands.executeCommand('workbench.action.reloadWindow');
+                }
+            });
+        }
+    });
+}
+class PomodoroTimerViewProvider {
+    _extensionUri;
+    static viewType = 'pomodoroTimer.pomodoroTimerView';
+    constructor(_extensionUri) {
+        this._extensionUri = _extensionUri;
     }
     resolveWebviewView(webviewView, context, _token) {
         webviewView.webview.options = {
             enableScripts: true,
-            localResourceRoots: [
-                vscode.Uri.file(path.join(this._extensionPath, 'src', 'webview'))
-            ]
+            localResourceRoots: [this._extensionUri]
         };
-        const webviewPath = path.join(this._extensionPath, 'src', 'webview');
-        const htmlPath = path.join(webviewPath, 'flipClock.html');
-        let html = fs.readFileSync(htmlPath, 'utf8');
-        // Fix resource URIs for CSS and JS
-        const cssUri = webviewView.webview.asWebviewUri(vscode.Uri.file(path.join(webviewPath, 'flipClock.css')));
-        const jsUri = webviewView.webview.asWebviewUri(vscode.Uri.file(path.join(webviewPath, 'flipClock.js')));
-        html = html.replace('flipClock.css', cssUri.toString());
-        html = html.replace('flipClock.js', jsUri.toString());
-        webviewView.webview.html = html;
+        // Handle messages from the webview
+        webviewView.webview.onDidReceiveMessage(message => {
+            switch (message.command) {
+                case 'showNotification':
+                    const config = vscode.workspace.getConfiguration('pomodoroTimer');
+                    if (config.get('showNotifications')) {
+                        vscode.window.showInformationMessage(message.text);
+                    }
+                    break;
+            }
+        }, undefined, []);
+        webviewView.webview.html = this._getHtmlForWebview();
     }
-}
-PomodoroViewProvider.viewType = 'pomodoroView';
-function activate(context) {
-    // Register the sidebar view provider
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider(PomodoroViewProvider.viewType, new PomodoroViewProvider(context)));
-    // (Optional) Keep the command for opening as a panel if you want
-    // const disposable = vscode.commands.registerCommand('pomodoro.showFlipClock', ...);
-    // context.subscriptions.push(disposable);
+    _getHtmlForWebview() {
+        return (0, pomodoro_timer_html_1.getPomodoroTimerHtml)();
+    }
 }
 function deactivate() { }
 //# sourceMappingURL=extension.js.map

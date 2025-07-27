@@ -1,0 +1,9 @@
+{
+    "Analog Clock: Settings have been changed. A window reload is required to apply the changes. Do you want to reload now?": "Analog Clock: 設定が変更されました。変更を適用するにはウィンドウを再読み込みする必要があります。今すぐリロードしますか？",
+    "Yes": "はい",
+    "No": "いいえ",
+    "📢 The clock is hidden due to the small screen size.": "📢 画面が小さいため時計は非表示です",
+    "['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']": "['日', '月', '火', '水', '木', '金', '土']",
+    "設定が変更されました。変更を適用するにはウィンドウを再読み込みしてください。": "設定が変更されました。変更を適用するにはウィンドウを再読み込みしてください。",
+    "再読み込み": "再読み込み"
+}

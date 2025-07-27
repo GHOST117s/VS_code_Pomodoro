@@ -1,72 +1,122 @@
 {
-  "name": "vs-code-pomodoro-flip-clock",
-  "displayName": "Pomodoro Flip Clock",
-  "description": "A fun Pomodoro timer with a flip clock animation for VS Code.",
-  "version": "0.0.2",
-  "publisher": "your-publisher-id",
+  "name": "pomodoro-timer-vscode",
+  "displayName": "Pomodoro Timer",
+  "description": "A beautiful Pomodoro timer for productivity in the VS Code explorer sidebar.",
+  "version": "1.0.0",
+  "icon": "images/AnalogClock.gif",
+  "publisher": "sidharthkumar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sidharthkumar/pomodoro-timer-vscode-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sidharthkumar/pomodoro-timer-vscode-extension/issues"
+  },
+  "homepage": "https://github.com/sidharthkumar/pomodoro-timer-vscode-extension#readme",
+  "license": "MIT",
   "engines": {
-    "vscode": ">=1.70.0"
+    "vscode": "^1.97.0"
   },
   "categories": [
     "Other"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/GHOST117s/VS_code_Pomodoro"
-  },
   "activationEvents": [
-    "onCommand:pomodoro.showFlipClock"
+    "onView:pomodoroTimer.pomodoroTimerView"
+  ],
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "time management",
+    "focus",
+    "break",
+    "explorer",
+    "action bar",
+    "VSCode tools",
+    "developer tools",
+    "webview",
+    "sidebar",
+    "custom views",
+    "VSCode extension"
   ],
   "main": "./out/extension.js",
+  "l10n": "./l10n",
   "contributes": {
-    "commands": [
-      {
-        "command": "pomodoro.showFlipClock",
-        "title": "Show Pomodoro Flip Clock"
-      }
-    ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "pomodoroContainer",
-          "title": "Pomodoro",
-          "icon": "src/webview/flipClock.svg"
-        }
-      ]
-    },
     "views": {
-      "pomodoroContainer": [
+      "explorer": [
         {
-          "id": "pomodoroView",
-          "name": "Pomodoro Timer"
+          "type": "webview",
+          "id": "pomodoroTimer.pomodoroTimerView",
+          "name": "%extension.pomodoroTimer.tab.name%"
         }
       ]
     },
-    "viewsWelcome": [
-      {
-        "view": "pomodoroView",
-        "contents": "Start your Pomodoro session!"
+    "configuration": {
+      "title": "Pomodoro Timer",
+      "properties": {
+        "pomodoroTimer.workDuration": {
+          "type": "number",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 60,
+          "description": "%extension.pomodoroTimer.workDuration.description%"
+        },
+        "pomodoroTimer.breakDuration": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 30,
+          "description": "%extension.pomodoroTimer.breakDuration.description%"
+        },
+        "pomodoroTimer.longBreakDuration": {
+          "type": "number",
+          "default": 15,
+          "minimum": 1,
+          "maximum": 60,
+          "description": "%extension.pomodoroTimer.longBreakDuration.description%"
+        },
+        "pomodoroTimer.longBreakInterval": {
+          "type": "number",
+          "default": 4,
+          "minimum": 2,
+          "maximum": 10,
+          "description": "%extension.pomodoroTimer.longBreakInterval.description%"
+        },
+        "pomodoroTimer.showNotifications": {
+          "type": "boolean",
+          "default": true,
+          "description": "%extension.pomodoroTimer.showNotifications.description%"
+        },
+        "pomodoroTimer.backgroundColor": {
+          "type": "string",
+          "default": "#e74c3c",
+          "description": "%extension.pomodoroTimer.backgroundColor.description%",
+          "pattern": "^#([A-Fa-f0-9]{1,8})$",
+          "patternErrorMessage": "%extension.pomodoroTimer.backgroundColor.errorMessage%"
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p .",
-    "watch": "tsc -watch -p .",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src",
+    "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/vscode": "^1.70.0",
-    "typescript": "^5.0.0",
-    "eslint": "^8.0.0"
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.97.0",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.19.0",
+    "typescript": "^5.7.3"
   },
-  "dependencies": {},
-  "files": [
-    {
-      "path": ".",
-      "collapsed": true
-    }
-  ]
+  "dependencies": {
+    "@vscode/l10n": "^0.0.18"
+  }
 }
