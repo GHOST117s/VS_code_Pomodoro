@@ -4,7 +4,7 @@
 
 ### Demo
 
-<p align="center"><img src="https://github.com/user-attachments/assets/e2af6f72-d1a0-4ccf-b08a-30030e22b630" style="filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.5));"/></p>
+
 
 ## Installation 💻
 
