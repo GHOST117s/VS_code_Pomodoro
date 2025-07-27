@@ -3,7 +3,7 @@
 A beautiful, feature-rich Pomodoro timer extension that helps you stay focused and productive using the Pomodoro Technique.
 
 <p align="center">
-  <img src="images/Demo.gif" alt="Pomodoro Timer Demo" width="350px" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="images/Screenshot 2025-07-27 at 10.53.02 PM.png" alt="Pomodoro Timer Demo" width="350px" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
 </p>
 
 ## Installation 💻
