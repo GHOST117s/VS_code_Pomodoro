@@ -37,13 +37,13 @@ exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const l10n = __importStar(require("@vscode/l10n"));
-const pomodoro_timer_html_1 = require("./pomodoro-timer-html");
+const web_viewer_html_1 = require("./web-viewer-html");
 function activate(context) {
-    const provider = new PomodoroTimerViewProvider(context.extensionUri);
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider(PomodoroTimerViewProvider.viewType, provider));
+    const provider = new WebViewerProvider(context.extensionUri);
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider(WebViewerProvider.viewType, provider));
     // Listen for configuration changes
     vscode.workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration('pomodoroTimer')) {
+        if (event.affectsConfiguration('webViewer')) {
             vscode.window.showInformationMessage(l10n.t('Configuration changed. Please reload the window to apply changes.'), l10n.t('Reload')).then(selection => {
                 if (selection === l10n.t('Reload')) {
                     vscode.commands.executeCommand('workbench.action.reloadWindow');
@@ -52,9 +52,9 @@ function activate(context) {
         }
     });
 }
-class PomodoroTimerViewProvider {
+class WebViewerProvider {
     _extensionUri;
-    static viewType = 'pomodoroTimer.pomodoroTimerView';
+    static viewType = 'webViewer.webViewerView';
     constructor(_extensionUri) {
         this._extensionUri = _extensionUri;
     }
@@ -66,18 +66,16 @@ class PomodoroTimerViewProvider {
         // Handle messages from the webview
         webviewView.webview.onDidReceiveMessage(message => {
             switch (message.command) {
-                case 'showNotification':
-                    const config = vscode.workspace.getConfiguration('pomodoroTimer');
-                    if (config.get('showNotifications')) {
-                        vscode.window.showInformationMessage(message.text);
-                    }
+                case 'updateUrl':
+                    const config = vscode.workspace.getConfiguration('webViewer');
+                    config.update('url', message.url, vscode.ConfigurationTarget.Global);
                     break;
             }
         }, undefined, []);
         webviewView.webview.html = this._getHtmlForWebview();
     }
     _getHtmlForWebview() {
-        return (0, pomodoro_timer_html_1.getPomodoroTimerHtml)();
+        return (0, web_viewer_html_1.getWebViewerHtml)();
     }
 }
 function deactivate() { }

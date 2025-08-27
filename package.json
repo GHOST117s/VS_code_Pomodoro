@@ -1,7 +1,7 @@
 {
-  "name": "pomodoro-timer-vscode",
-  "displayName": "Pomodoro Timer",
-  "description": "A beautiful Pomodoro timer for productivity in the VS Code explorer sidebar.",
+  "name": "web-viewer-vscode",
+  "displayName": "Web Viewer",
+  "description": "A customizable web viewer for displaying web pages in the VS Code explorer sidebar.",
   "version": "1.5.0",
   "icon": "images/AnalogClock.gif",
   "publisher": "sidharthkumar",
@@ -21,21 +21,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:pomodoroTimer.pomodoroTimerView"
+    "onView:webViewer.webViewerView"
   ],
   "keywords": [
-    "pomodoro",
-    "timer",
-    "productivity",
-    "time management",
-    "focus",
-    "break",
+    "web",
+    "viewer",
+    "browser",
+    "iframe",
+    "url",
+    "website",
     "explorer",
-    "action bar",
+    "sidebar",
     "VSCode tools",
     "developer tools",
     "webview",
-    "sidebar",
     "custom views",
     "VSCode extension"
   ],
@@ -46,53 +45,30 @@
       "explorer": [
         {
           "type": "webview",
-          "id": "pomodoroTimer.pomodoroTimerView",
-          "name": "%extension.pomodoroTimer.tab.name%"
+          "id": "webViewer.webViewerView",
+          "name": "%extension.webViewer.tab.name%"
         }
       ]
     },
     "configuration": {
-      "title": "Pomodoro Timer",
+      "title": "Web Viewer",
       "properties": {
-        "pomodoroTimer.workDuration": {
-          "type": "number",
-          "default": 25,
-          "minimum": 1,
-          "maximum": 60,
-          "description": "%extension.pomodoroTimer.workDuration.description%"
+        "webViewer.url": {
+          "type": "string",
+          "default": "https://www.example.com",
+          "description": "%extension.webViewer.url.description%"
         },
-        "pomodoroTimer.breakDuration": {
-          "type": "number",
-          "default": 5,
-          "minimum": 1,
-          "maximum": 30,
-          "description": "%extension.pomodoroTimer.breakDuration.description%"
-        },
-        "pomodoroTimer.longBreakDuration": {
-          "type": "number",
-          "default": 15,
-          "minimum": 1,
-          "maximum": 60,
-          "description": "%extension.pomodoroTimer.longBreakDuration.description%"
-        },
-        "pomodoroTimer.longBreakInterval": {
-          "type": "number",
-          "default": 4,
-          "minimum": 2,
-          "maximum": 10,
-          "description": "%extension.pomodoroTimer.longBreakInterval.description%"
-        },
-        "pomodoroTimer.showNotifications": {
+        "webViewer.enableJavascript": {
           "type": "boolean",
           "default": true,
-          "description": "%extension.pomodoroTimer.showNotifications.description%"
+          "description": "%extension.webViewer.enableJavascript.description%"
         },
-        "pomodoroTimer.backgroundColor": {
-          "type": "string",
-          "default": "#e74c3c",
-          "description": "%extension.pomodoroTimer.backgroundColor.description%",
-          "pattern": "^#([A-Fa-f0-9]{1,8})$",
-          "patternErrorMessage": "%extension.pomodoroTimer.backgroundColor.errorMessage%"
+        "webViewer.refreshInterval": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 3600,
+          "description": "%extension.webViewer.refreshInterval.description%"
         }
       }
     }

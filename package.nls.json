@@ -1,10 +1,6 @@
 {
-    "extension.pomodoroTimer.tab.name": "Pomodoro Timer",
-    "extension.pomodoroTimer.workDuration.description": "Work session duration in minutes",
-    "extension.pomodoroTimer.breakDuration.description": "Short break duration in minutes",
-    "extension.pomodoroTimer.longBreakDuration.description": "Long break duration in minutes",
-    "extension.pomodoroTimer.longBreakInterval.description": "Number of work sessions before a long break",
-    "extension.pomodoroTimer.showNotifications.description": "Show notifications when timer completes",
-    "extension.pomodoroTimer.backgroundColor.description": "Background color (HEX format)",
-    "extension.pomodoroTimer.backgroundColor.errorMessage": "Please enter a valid HEX color code (e.g., #ff0000)"
+    "extension.webViewer.tab.name": "Web Viewer",
+    "extension.webViewer.url.description": "URL to display in the web viewer",
+    "extension.webViewer.enableJavascript.description": "Enable JavaScript execution in the web viewer",
+    "extension.webViewer.refreshInterval.description": "Auto-refresh interval in seconds (0 to disable)"
 }

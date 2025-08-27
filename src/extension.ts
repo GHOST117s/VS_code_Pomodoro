@@ -1,20 +1,20 @@
 import * as vscode from 'vscode';
 import * as l10n from '@vscode/l10n';
-import { getPomodoroTimerHtml } from './pomodoro-timer-html';
+import { getWebViewerHtml } from './web-viewer-html';
 
 export function activate(context: vscode.ExtensionContext) {
-    const provider = new PomodoroTimerViewProvider(context.extensionUri);
+    const provider = new WebViewerProvider(context.extensionUri);
 
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider(
-            PomodoroTimerViewProvider.viewType,
+            WebViewerProvider.viewType,
             provider
         )
     );
 
     // Listen for configuration changes
     vscode.workspace.onDidChangeConfiguration(event => {
-        if (event.affectsConfiguration('pomodoroTimer')) {
+        if (event.affectsConfiguration('webViewer')) {
             vscode.window.showInformationMessage(
                 l10n.t('Configuration changed. Please reload the window to apply changes.'),
                 l10n.t('Reload')
@@ -27,8 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
     });
 }
 
-class PomodoroTimerViewProvider implements vscode.WebviewViewProvider {
-    public static readonly viewType = 'pomodoroTimer.pomodoroTimerView';
+class WebViewerProvider implements vscode.WebviewViewProvider {
+    public static readonly viewType = 'webViewer.webViewerView';
 
     constructor(private readonly _extensionUri: vscode.Uri) { }
 
@@ -46,11 +46,9 @@ class PomodoroTimerViewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.onDidReceiveMessage(
             message => {
                 switch (message.command) {
-                    case 'showNotification':
-                        const config = vscode.workspace.getConfiguration('pomodoroTimer');
-                        if (config.get('showNotifications')) {
-                            vscode.window.showInformationMessage(message.text);
-                        }
+                    case 'updateUrl':
+                        const config = vscode.workspace.getConfiguration('webViewer');
+                        config.update('url', message.url, vscode.ConfigurationTarget.Global);
                         break;
                 }
             },
@@ -62,7 +60,7 @@ class PomodoroTimerViewProvider implements vscode.WebviewViewProvider {
     }
 
     private _getHtmlForWebview() {
-        return getPomodoroTimerHtml();
+        return getWebViewerHtml();
     }
 }
 
